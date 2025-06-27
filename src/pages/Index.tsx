@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -6,7 +7,7 @@ import AIAssistant from '@/components/AIAssistant';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Star, Users, Clock, Compass, Mountain, TreePine, Sun } from 'lucide-react';
+import { MapPin, Star, Users, Clock, Compass, Mountain, TreePine, Sparkles, Shield, Zap, Globe } from 'lucide-react';
 
 const Index = () => {
   // Mock data for popular destinations
@@ -59,63 +60,79 @@ const Index = () => {
 
   const features = [
     {
+      icon: Sparkles,
+      title: 'AI Trip Planner',
+      description: 'Get personalized day-wise itineraries powered by advanced AI',
+      color: 'from-purple-500 to-pink-500'
+    },
+    {
       icon: MapPin,
       title: 'GPS-Based Recommendations',
-      description: 'Find treks near your location with real-time GPS tracking'
+      description: 'Find amazing destinations near your location with real-time GPS',
+      color: 'from-emerald-500 to-teal-500'
     },
     {
-      icon: Compass,
-      title: 'AI Trip Planner',
-      description: 'Get personalized recommendations powered by advanced AI'
-    },
-    {
-      icon: Mountain,
+      icon: Shield,
       title: 'Expert Guides',
-      description: 'Professional guides for safe and memorable adventures'
+      description: 'Professional guides for safe and memorable adventures',
+      color: 'from-blue-500 to-cyan-500'
     },
     {
-      icon: Sun,
+      icon: Zap,
       title: '24/7 Support',
-      description: 'Round-the-clock assistance for all your trek needs'
+      description: 'Round-the-clock assistance for all your trek needs',
+      color: 'from-orange-500 to-red-500'
     }
   ];
 
   const handleSearch = (searchData: any) => {
     console.log('Search data:', searchData);
-    // Navigate to explore page with search params
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
       <Header />
       
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 trek-hero-bg" />
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/90 via-teal-600/85 to-cyan-600/90" />
+          <div 
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1' fill-rule='nonzero'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            }}
+          />
+        </div>
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 animate-slide-up">
               Discover Your Next
-              <span className="block text-yellow-400">Adventure</span>
+              <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
+                Adventure
+              </span>
             </h1>
-            <p className="text-xl text-green-100 mb-12 max-w-2xl mx-auto animate-slide-up">
-              Find and book amazing treks with real-time GPS tracking, AI recommendations, 
-              and expert guides. Your adventure awaits!
+            <p className="text-xl text-emerald-100 mb-12 max-w-2xl mx-auto animate-slide-up leading-relaxed">
+              Find and plan amazing treks with AI-powered recommendations, real-time GPS tracking, 
+              and expert guides. Your personalized adventure awaits!
             </p>
             
             {/* Search Bar */}
-            <div className="max-w-4xl mx-auto animate-fade-scale">
-              <SearchBar onSearch={handleSearch} className="glass-card" />
+            <div className="max-w-6xl mx-auto animate-fade-scale">
+              <SearchBar onSearch={handleSearch} />
             </div>
           </div>
         </div>
         
         {/* Floating elements */}
         <div className="absolute top-20 left-10 animate-float">
-          <TreePine className="h-8 w-8 text-green-300 opacity-60" />
+          <TreePine className="h-8 w-8 text-emerald-300 opacity-60" />
         </div>
         <div className="absolute bottom-20 right-10 animate-float" style={{ animationDelay: '1s' }}>
-          <Mountain className="h-10 w-10 text-green-200 opacity-60" />
+          <Mountain className="h-10 w-10 text-emerald-200 opacity-60" />
+        </div>
+        <div className="absolute top-1/2 left-20 animate-float" style={{ animationDelay: '2s' }}>
+          <Globe className="h-6 w-6 text-teal-300 opacity-50" />
         </div>
       </section>
 
@@ -135,24 +152,25 @@ const Index = () => {
             {popularDestinations.map((destination, index) => (
               <Card 
                 key={destination.id} 
-                className="hover-lift overflow-hidden border-0 shadow-lg"
+                className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-0 shadow-lg hover:-translate-y-2"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="relative">
+                <div className="relative overflow-hidden">
                   <img
                     src={destination.image}
                     alt={destination.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  <Badge className="absolute top-3 left-3 bg-teal-600 hover:bg-teal-700">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <Badge className="absolute top-3 left-3 bg-emerald-500 hover:bg-emerald-600 text-white border-0">
                     {destination.difficulty}
                   </Badge>
-                  <div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-sm">
+                  <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded text-sm">
                     {destination.distance}
                   </div>
                 </div>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg font-semibold text-gray-900">
+                  <CardTitle className="text-lg font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors">
                     {destination.name}
                   </CardTitle>
                   <div className="flex items-center text-gray-600">
@@ -172,12 +190,12 @@ const Index = () => {
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-teal-600">
+                    <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                       {destination.price}
                     </span>
                     <Button 
                       size="sm" 
-                      className="bg-teal-600 hover:bg-teal-700"
+                      className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 shadow-md"
                       asChild
                     >
                       <Link to={`/trip/${destination.id}`}>
@@ -194,7 +212,7 @@ const Index = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-teal-600 text-teal-600 hover:bg-teal-50"
+              className="border-emerald-500 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-600 px-8"
               asChild
             >
               <Link to="/explore">
@@ -207,13 +225,13 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gradient-to-r from-teal-600 to-green-600">
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Why Choose TrekHive?
             </h2>
-            <p className="text-lg text-green-100 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Experience the future of adventure travel with our cutting-edge features
             </p>
           </div>
@@ -224,16 +242,16 @@ const Index = () => {
               return (
                 <div 
                   key={index}
-                  className="text-center animate-slide-up"
+                  className="group text-center p-6 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
-                  <div className="bg-white/10 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <div className={`bg-gradient-to-br ${feature.color} rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">
                     {feature.title}
                   </h3>
-                  <p className="text-green-100">
+                  <p className="text-gray-600 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -249,14 +267,14 @@ const Index = () => {
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
             Ready for Your Next Adventure?
           </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
             Join thousands of adventurers who have discovered amazing treks with TrekHive. 
-            Start your journey today!
+            Start your personalized journey today!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
-              className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3"
+              className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-8 py-3 shadow-lg"
               asChild
             >
               <Link to="/explore">
@@ -267,10 +285,13 @@ const Index = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-teal-600 text-teal-600 hover:bg-teal-50 px-8 py-3"
+              className="border-emerald-500 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-600 px-8 py-3"
+              asChild
             >
-              <Users className="h-5 w-5 mr-2" />
-              Join Community
+              <Link to="/auth">
+                <Users className="h-5 w-5 mr-2" />
+                Join Community
+              </Link>
             </Button>
           </div>
         </div>
@@ -282,12 +303,12 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="rounded-lg bg-gradient-to-br from-green-600 to-teal-600 p-2">
+                <div className="rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 p-2">
                   <Mountain className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-xl font-bold">TrekHive</span>
               </div>
-              <p className="text-gray-400">
+              <p className="text-gray-400 leading-relaxed">
                 Discover amazing adventures with AI-powered recommendations and GPS tracking.
               </p>
             </div>
