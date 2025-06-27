@@ -3,52 +3,90 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+
+interface Message {
+  id: number;
+  text: string;
+  isBot: boolean;
+}
+
+interface ChatMessage {
+  role: 'user' | 'model';
+  parts: { text: string }[];
+}
 
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([
+  const [isLoading, setIsLoading] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Hi! I'm your TrekHive AI assistant. How can I help you find your perfect adventure today?",
+      text: "Hi! I'm your TrekHive AI assistant powered by Gemini. How can I help you find your perfect adventure today?",
       isBot: true,
     }
   ]);
+  const [conversationHistory, setConversationHistory] = useState<ChatMessage[]>([]);
 
-  const handleSendMessage = () => {
-    if (!message.trim()) return;
+  const handleSendMessage = async () => {
+    if (!message.trim() || isLoading) return;
 
-    // Add user message
-    const userMessage = {
+    const userMessage: Message = {
       id: Date.now(),
       text: message,
       isBot: false,
     };
     
     setMessages(prev => [...prev, userMessage]);
+    const currentMessage = message;
     setMessage('');
+    setIsLoading(true);
 
-    // Simulate AI response (in real app, this would call Gemini API)
-    setTimeout(() => {
-      const responses = [
-        "I'd be happy to help you find the perfect trek! What type of adventure are you looking for?",
-        "Based on your location, I can recommend some amazing nearby treks. Would you like me to show you some options?",
-        "Great question! Let me help you with that. What's your experience level with trekking?",
-        "I can help you plan an amazing adventure! What's your budget and preferred duration?",
-      ];
+    try {
+      console.log('Calling Gemini API...');
       
-      const botResponse = {
+      const { data, error } = await supabase.functions.invoke('gemini-chat', {
+        body: {
+          message: currentMessage,
+          conversationHistory: conversationHistory
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      const botResponse: Message = {
         id: Date.now() + 1,
-        text: responses[Math.floor(Math.random() * responses.length)],
+        text: data.response,
         isBot: true,
       };
       
       setMessages(prev => [...prev, botResponse]);
-    }, 1000);
-
-    toast.success('Message sent to AI assistant');
+      setConversationHistory(data.conversationHistory || []);
+      
+      toast.success('AI assistant responded');
+    } catch (error: any) {
+      console.error('Error calling Gemini API:', error);
+      
+      const errorMessage: Message = {
+        id: Date.now() + 1,
+        text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment!",
+        isBot: true,
+      };
+      
+      setMessages(prev => [...prev, errorMessage]);
+      toast.error('Failed to get AI response');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -105,6 +143,14 @@ const AIAssistant = () => {
                     </div>
                   </div>
                 ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-gray-100 text-gray-800 p-3 rounded-lg text-sm flex items-center">
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Thinking...
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Input */}
@@ -116,13 +162,19 @@ const AIAssistant = () => {
                     onKeyPress={handleKeyPress}
                     placeholder="Ask about treks, destinations..."
                     className="flex-1 border-gray-200 focus:border-teal-500"
+                    disabled={isLoading}
                   />
                   <Button
                     onClick={handleSendMessage}
                     size="icon"
                     className="bg-teal-600 hover:bg-teal-700"
+                    disabled={isLoading || !message.trim()}
                   >
-                    <Send className="h-4 w-4" />
+                    {isLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Send className="h-4 w-4" />
+                    )}
                   </Button>
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
