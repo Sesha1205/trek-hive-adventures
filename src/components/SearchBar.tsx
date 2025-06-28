@@ -141,7 +141,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className = '' }) => {
           console.error('Error saving trip plan:', saveError);
         }
 
-        toast.success('Trip plan generated successfully!');
+        toast.success('Comprehensive trip plan generated successfully!');
         onSearch?.(searchData);
         
         // Scroll to results
@@ -170,12 +170,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className = '' }) => {
 
   return (
     <div className="space-y-8">
-      <div className={`bg-white/95 backdrop-blur-md rounded-2xl shadow-xl p-6 border border-white/20 ${className}`}>
+      <div className={`glass-card rounded-2xl shadow-xl p-6 animate-fade-scale hover-teal-glow ${className}`}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Destination */}
           <div className="space-y-2 lg:col-span-2">
             <label className="text-sm font-medium text-gray-700 flex items-center">
-              <MapPin className="h-4 w-4 mr-1 text-emerald-600" />
+              <MapPin className="h-4 w-4 mr-1 text-teal" />
               Destination
             </label>
             <Input
@@ -183,21 +183,21 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className = '' }) => {
               placeholder="Where to explore?"
               value={searchData.destination}
               onChange={(e) => setSearchData(prev => ({ ...prev, destination: e.target.value }))}
-              className="border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+              className="border-2 border-gray-200 focus:border-pink focus:ring-pink/20 transition-all duration-300"
             />
           </div>
 
           {/* From Date */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 flex items-center">
-              <Calendar className="h-4 w-4 mr-1 text-emerald-600" />
+              <Calendar className="h-4 w-4 mr-1 text-teal" />
               From Date
             </label>
             <Input
               type="date"
               value={searchData.fromDate}
               onChange={(e) => setSearchData(prev => ({ ...prev, fromDate: e.target.value }))}
-              className="border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+              className="border-2 border-gray-200 focus:border-pink focus:ring-pink/20 transition-all duration-300"
               min={new Date().toISOString().split('T')[0]}
             />
           </div>
@@ -205,14 +205,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className = '' }) => {
           {/* To Date */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 flex items-center">
-              <Calendar className="h-4 w-4 mr-1 text-emerald-600" />
+              <Calendar className="h-4 w-4 mr-1 text-teal" />
               To Date
             </label>
             <Input
               type="date"
               value={searchData.toDate}
               onChange={(e) => setSearchData(prev => ({ ...prev, toDate: e.target.value }))}
-              className="border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+              className="border-2 border-gray-200 focus:border-pink focus:ring-pink/20 transition-all duration-300"
               min={searchData.fromDate || new Date().toISOString().split('T')[0]}
             />
           </div>
@@ -220,7 +220,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className = '' }) => {
           {/* Budget */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 flex items-center">
-              <DollarSign className="h-4 w-4 mr-1 text-emerald-600" />
+              <DollarSign className="h-4 w-4 mr-1 text-teal" />
               Budget
             </label>
             <Input
@@ -228,7 +228,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className = '' }) => {
               placeholder="₹10,000"
               value={searchData.budget}
               onChange={(e) => setSearchData(prev => ({ ...prev, budget: formatBudget(e.target.value) }))}
-              className="border-gray-200 focus:border-emerald-500 focus:ring-emerald-500/20"
+              className="border-2 border-gray-200 focus:border-pink focus:ring-pink/20 transition-all duration-300"
             />
           </div>
         </div>
@@ -239,7 +239,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className = '' }) => {
             variant="outline"
             onClick={handleLocationDetect}
             disabled={isLocating}
-            className="flex-shrink-0 border-emerald-200 text-emerald-600 hover:bg-emerald-50"
+            className="flex-shrink-0 btn-secondary"
           >
             <MapPin className={`h-4 w-4 mr-2 ${isLocating ? 'animate-pulse' : ''}`} />
             {isLocating ? 'Detecting...' : 'Use My Location'}
@@ -247,7 +247,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, className = '' }) => {
           <Button 
             onClick={handleSearch}
             disabled={isSearching}
-            className="flex-1 sm:flex-none bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-8 py-2.5 shadow-lg"
+            className="flex-1 sm:flex-none btn-primary px-8 py-2.5 shadow-lg"
           >
             {isSearching ? (
               <>

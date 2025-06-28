@@ -28,7 +28,7 @@ serve(async (req) => {
     const endDate = new Date(toDate);
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
-    const systemPrompt = `You are a professional travel planner for TrekHive, specializing in adventure and trekking experiences. Create a detailed day-wise itinerary for a ${days}-day trip to ${destination} with a budget of ₹${budget}.
+    const systemPrompt = `You are a comprehensive travel planner for TrekHive, specializing in adventure and trekking experiences. Create a detailed day-wise itinerary for a ${days}-day trip to ${destination} with a budget of ₹${budget}.
 
 For each day, provide:
 1. Day number and date
@@ -39,11 +39,68 @@ For each day, provide:
 6. Best time to visit each location
 7. Difficulty level for trekking activities
 
+IMPORTANT: Also include comprehensive sections for:
+- Transportation options (how to reach by bus, car, bike, train, flight)
+- Essential items to carry (based on destination climate and activities)
+- Safety precautions and guidelines
+- Emergency contacts and medical facilities
+- Weather considerations
+- Local customs and cultural guidelines
+- Food recommendations and dietary considerations
+
 Format the response as a structured JSON with this exact format:
 {
   "destination": "${destination}",
   "totalDays": ${days},
   "totalBudget": ${budget},
+  "transportation": {
+    "byBus": {
+      "routes": ["Route details"],
+      "cost": "Estimated cost",
+      "duration": "Travel time",
+      "tips": "Bus travel tips"
+    },
+    "byCar": {
+      "routes": ["Route details with stops"],
+      "cost": "Fuel and toll estimates",
+      "duration": "Driving time",
+      "tips": "Road conditions and parking info"
+    },
+    "byBike": {
+      "routes": ["Bike-friendly routes"],
+      "cost": "Fuel estimates",
+      "duration": "Riding time",
+      "tips": "Safety gear and road conditions"
+    },
+    "byTrain": {
+      "stations": ["Nearest railway stations"],
+      "cost": "Ticket price range",
+      "duration": "Travel time",
+      "tips": "Booking and connectivity info"
+    },
+    "byFlight": {
+      "airports": ["Nearest airports"],
+      "cost": "Flight price range",
+      "duration": "Flight time",
+      "tips": "Airport connectivity"
+    }
+  },
+  "essentialItems": {
+    "clothing": ["Weather-appropriate clothing items"],
+    "gear": ["Trekking and adventure gear"],
+    "personal": ["Personal care and health items"],
+    "electronics": ["Cameras, power banks, etc."],
+    "emergency": ["First aid and emergency supplies"],
+    "food": ["Food and water recommendations"]
+  },
+  "safetyPrecautions": {
+    "general": ["General safety guidelines"],
+    "weather": ["Weather-related precautions"],
+    "altitude": ["High altitude precautions if applicable"],
+    "wildlife": ["Wildlife safety measures"],
+    "medical": ["Medical precautions and emergency contacts"],
+    "communication": ["Emergency contact numbers"]
+  },
   "days": [
     {
       "day": 1,
@@ -56,20 +113,35 @@ Format the response as a structured JSON with this exact format:
           "activities": ["activity1", "activity2"],
           "estimatedCost": 500,
           "difficulty": "Easy/Moderate/Hard",
-          "bestTime": "Morning/Afternoon/Evening"
+          "bestTime": "Morning/Afternoon/Evening",
+          "tips": "Specific tips for this place"
         }
       ],
       "totalDayCost": 1500,
-      "tips": "Travel tips for the day"
+      "tips": "Travel tips for the day",
+      "meals": "Recommended meals and restaurants",
+      "accommodation": "Suggested stay options"
     }
   ],
   "additionalTips": "General travel tips for the entire trip",
-  "packingList": ["item1", "item2", "item3"]
+  "packingList": ["item1", "item2", "item3"],
+  "localInfo": {
+    "culture": "Local customs and traditions",
+    "language": "Local language tips",
+    "currency": "Currency exchange info",
+    "emergency": "Emergency services and hospitals"
+  },
+  "weatherInfo": {
+    "season": "Best season to visit",
+    "temperature": "Expected temperature range",
+    "rainfall": "Rainfall expectations",
+    "clothing": "Weather-appropriate clothing"
+  }
 }
 
-Ensure all place names are real, specific locations near ${destination}. Focus on adventure activities, trekking spots, scenic viewpoints, local experiences, and natural attractions.`;
+Ensure all place names are real, specific locations near ${destination}. Focus on adventure activities, trekking spots, scenic viewpoints, local experiences, and natural attractions. Provide practical, actionable information for travelers.`;
 
-    console.log('Generating trip plan for:', { destination, fromDate, toDate, budget, days });
+    console.log('Generating comprehensive trip plan for:', { destination, fromDate, toDate, budget, days });
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
       method: 'POST',
@@ -85,7 +157,7 @@ Ensure all place names are real, specific locations near ${destination}. Focus o
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 2048,
+          maxOutputTokens: 8192,
         },
       }),
     });
