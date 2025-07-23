@@ -313,3 +313,49 @@
   color: white;
   transform: translateY(-2px);
 }
+
+/* Enhanced gradient animations */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 50% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Enhanced hover effects */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px -10px rgba(94, 190, 196, 0.3);
+}
+
+/* Beautiful section backgrounds with specified colors */
+.section-gradient-1 {
+  background: linear-gradient(135deg, 
+    rgba(253, 245, 223, 0.3) 0%,
+    rgba(94, 190, 196, 0.1) 50%,
+    rgba(249, 44, 133, 0.1) 100%);
+}
+
+.section-gradient-2 {
+  background: linear-gradient(45deg,
+    rgba(94, 190, 196, 0.05) 0%,
+    rgba(253, 245, 223, 0.2) 50%,
+    rgba(249, 44, 133, 0.05) 100%);
+}
+
+.section-gradient-3 {
+  background: linear-gradient(225deg,
+    rgba(249, 44, 133, 0.08) 0%,
+    rgba(253, 245, 223, 0.15) 50%,
+    rgba(94, 190, 196, 0.08) 100%);
+}

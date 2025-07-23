@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import AIAssistant from '@/components/AIAssistant';
@@ -8,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, Star, Users, Calendar, ArrowRight, Mountain, Compass, Camera } from 'lucide-react';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -81,14 +83,14 @@ const Index = () => {
             </p>
           </div>
           
-          <div className={`transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '0.5s' }}>
+          <div className={`search-section transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '0.5s' }}>
             <SearchBar className="max-w-6xl mx-auto" />
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 section-gradient-1 backdrop-blur-sm">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-4 animate-fade-scale">
@@ -132,7 +134,7 @@ const Index = () => {
       </section>
 
       {/* Featured Trips */}
-      <section className="py-16 px-4 bg-white/50">
+      <section className="py-16 px-4 section-gradient-2 backdrop-blur-sm">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
@@ -181,7 +183,10 @@ const Index = () => {
                       <span>{trip.duration}</span>
                     </div>
                   </div>
-                  <Button className="w-full btn-primary group">
+                  <Button 
+                    className="w-full btn-primary group"
+                    onClick={() => navigate('/explore')}
+                  >
                     Explore Trip
                     <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
@@ -193,7 +198,7 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 section-gradient-3 backdrop-blur-sm">
         <div className="container mx-auto text-center">
           <div className="glass-card max-w-4xl mx-auto p-8 md:p-12 animate-fade-scale">
             <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-6">
@@ -204,11 +209,23 @@ const Index = () => {
               Start your journey today with AI-powered trip planning.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="btn-primary text-lg px-8 py-3 shadow-xl">
+              <Button 
+                size="lg" 
+                className="btn-primary text-lg px-8 py-3 shadow-xl"
+                onClick={() => {
+                  const searchSection = document.querySelector('.search-section');
+                  searchSection?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Plan My Trip
                 <Mountain className="h-5 w-5 ml-2" />
               </Button>
-              <Button size="lg" variant="outline" className="btn-secondary text-lg px-8 py-3">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="btn-secondary text-lg px-8 py-3"
+                onClick={() => navigate('/explore')}
+              >
                 Explore Destinations
                 <Compass className="h-5 w-5 ml-2" />
               </Button>

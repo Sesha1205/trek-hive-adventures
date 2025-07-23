@@ -125,21 +125,36 @@ const TripPlanDisplay: React.FC<TripPlanDisplayProps> = ({ tripPlan }) => {
     }
   };
 
-  if (tripPlan.error && tripPlan.rawResponse) {
+  // Handle malformed or error responses by trying to parse useful information
+  if (tripPlan.error || !tripPlan.destination) {
+    let displayContent = "Unable to generate a proper trip plan. Please try again with different parameters.";
+    
+    if (tripPlan.rawResponse) {
+      // Try to extract meaningful content from raw response
+      try {
+        const lines = tripPlan.rawResponse.split('\n').filter(line => line.trim());
+        if (lines.length > 0) {
+          displayContent = lines.join('\n');
+        }
+      } catch (e) {
+        // Use fallback content
+      }
+    }
+    
     return (
       <div className="space-y-6">
-        <Card className="border-amber-200 bg-amber-50 animate-fade-in">
-          <CardHeader>
-            <CardTitle className="text-amber-800 flex items-center">
+        <Card className="glass-card border-2 border-pink/20 animate-fade-in">
+          <CardHeader className="bg-gradient-to-r from-pink/10 to-teal/10">
+            <CardTitle className="text-pink flex items-center">
               <Star className="h-5 w-5 mr-2" />
-              Trip Plan Generated (Raw Response)
+              Trip Information
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <div className="prose max-w-none">
-              <pre className="whitespace-pre-wrap text-sm bg-white p-4 rounded border">
-                {tripPlan.rawResponse}
-              </pre>
+              <div className="whitespace-pre-wrap text-sm bg-cream/30 p-4 rounded-lg border border-teal/20">
+                {displayContent}
+              </div>
             </div>
           </CardContent>
         </Card>
