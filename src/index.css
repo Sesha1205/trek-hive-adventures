@@ -338,6 +338,26 @@
   box-shadow: 0 20px 40px -10px rgba(94, 190, 196, 0.3);
 }
 
+/* Remove yellow colors and improve rating display */
+.text-yellow-400,
+.text-yellow-500,
+.text-yellow-600 {
+  color: rgb(94, 190, 196) !important;
+}
+
+.fill-yellow-400,
+.fill-yellow-500 {
+  fill: rgb(94, 190, 196) !important;
+}
+
+/* Enhanced line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Beautiful section backgrounds with specified colors */
 .section-gradient-1 {
   background: linear-gradient(135deg, 
